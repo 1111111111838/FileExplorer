@@ -17,20 +17,24 @@ jobs:
           distribution: temurin
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-      - name: Build
+      - name: Build and capture output
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug 2>&1 | tee build_output.txt
+          ./gradlew assembleDebug > build_stdout.txt 2> build_stderr.txt
+          BUILD_EXIT=$?
+          echo "Exit code: $BUILD_EXIT"
+          echo "=== STDOUT ===" && cat build_stdout.txt
+          echo "=== STDERR ===" && cat build_stderr.txt
+          echo "=== APK search ===" && find . -name "*.apk" 2>/dev/null
+          exit $BUILD_EXIT
         continue-on-error: true
-      - name: Find APK
-        run: find . -name "*.apk" -type f 2>/dev/null || echo "No APK anywhere"
-      - name: Show build tail
-        run: tail -50 build_output.txt
-      - name: Upload build log
+      - name: Upload logs
         uses: actions/upload-artifact@v4
         with:
-          name: build-log
-          path: build_output.txt
+          name: build-logs
+          path: |
+            build_stdout.txt
+            build_stderr.txt
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
