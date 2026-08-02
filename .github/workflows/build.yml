@@ -22,9 +22,8 @@ jobs:
             mwoffliner \
             --mwUrl=https://he.wikipedia.org/ \
             --adminEmail=admin@example.com \
-            --output=/output \
-            --format=zim \
-            --noimages
+            --outputDirectory=/output \
+            --format=nopic
 
       - name: Upload ZIM file as Artifact
         uses: actions/upload-artifact@v4
