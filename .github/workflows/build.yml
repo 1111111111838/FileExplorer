@@ -21,9 +21,10 @@ jobs:
             ghcr.io/openzim/mwoffliner:latest \
             mwoffliner \
             --mwUrl=https://he.wikipedia.org/ \
-            --adminEmail=admin@example.com \
+            --adminEmail=RS0556780310@gmail.com \
             --outputDirectory=/output \
-            --format=nopic
+            --format=nopic \
+            --requestTimeout=300
 
       - name: Upload ZIM file as Artifact
         uses: actions/upload-artifact@v4
